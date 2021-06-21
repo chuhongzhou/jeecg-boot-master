@@ -160,10 +160,12 @@ public class CompanyProjectController extends JeecgController<CompanyProject, IC
 
                 BigDecimal sumWeight = new BigDecimal(0);
                 BigDecimal totalWeight = new BigDecimal(0);
+                // 每个阶段权重*每个阶段的进度总和 所有权重总和
                 for (CompanyProjectSchedule companyProjectSchedule : companyProjectSchedules) {
                     sumWeight = sumWeight.add(new BigDecimal(companyProjectSchedule.getWeight()).multiply(new BigDecimal(companyProjectSchedule.getSchedule())));
                     totalWeight = totalWeight.add(new BigDecimal(companyProjectSchedule.getWeight()));
                 }
+                // 计算出项目的进度
                 schedule = sumWeight.divide(totalWeight, 0, BigDecimal.ROUND_UP);
                 System.err.println(schedule);
                 i.setProjectSchedule(schedule.toString());
