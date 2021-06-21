@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.demo.company.mapper.CompanyProjectScheduleMapper">
+
+    <select id="getProjectById" resultType="org.jeecg.modules.demo.company.entity.CompanyProjectSchedule">
+        SELECT * from company_project_schedule where project_id = #{projectId} order by create_time desc
+    </select>
+
+    <select id="pageByUnitAndType" resultType="org.jeecg.modules.demo.company.entity.CompanyProjectSchedule">
+        SELECT
+        cps.*,
+        cpj.project_name,
+        cpf.company_title companyName
+        FROM
+        company_project_schedule cps
+        LEFT JOIN company_project cpj ON cpj.id = cps.project_id
+        LEFT JOIN company_profile cpf ON cpj.company_id = cpf.id
+        <where>
+            <if test="map.projectName != null and map.projectName != ''">
+                and cpj.project_name LIKE '%${map.projectName}%'
+            </if>
+            <if test="map.companyName != null and map.companyName != ''">
+                and cpf.company_title LIKE '%${map.companyName}%'
+            </if>
+            <if test="map.title != null and map.title != ''">
+                and cps.title LIKE '%${map.title}%'
+            </if>
+        </where>
+    </select>
+
+</mapper>

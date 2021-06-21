@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.demo.company.mapper.CompanyProjectMapper">
+
+    <select id="pageByUnitAndType" resultType="org.jeecg.modules.demo.company.entity.CompanyProject">
+        SELECT
+        cpj.*,
+        cpf.company_title companyName
+        FROM
+        company_project cpj
+        LEFT JOIN company_profile cpf ON cpj.company_id = cpf.id
+        where 1=1
+        <if test="map.projectName != null and map.projectName != ''">
+            and cpj.project_name LIKE '%${map.projectName}%'
+        </if>
+        <if test="map.projectType != null and map.projectType != ''">
+            and cpj.project_type LIKE '%${map.projectType}%'
+        </if>
+        <if test="map.companyName != null and map.companyName != ''">
+            and cpf.company_title LIKE '%${map.companyName}%'
+        </if>
+    </select>
+</mapper>
